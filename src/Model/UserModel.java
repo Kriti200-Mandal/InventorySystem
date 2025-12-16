@@ -20,9 +20,10 @@ public class UserModel {
   {
       users = new HashMap<>();
       user us = new user("admin" ,"admin123","admin");
-      user uss = new user("user","user123","user");
+      
       users.put("admin",us);
-      users.put("user",uss);
+     
+      
       
   }
     
