@@ -34,17 +34,26 @@ public class UserModel {
             return null; 
         }
          
-         user us = users.get(userName);
+         user User = users.get(userName);
          
-        if (us.getPassword().equals(password))
+        if (User.getPassword().equals(password))
         {
             
-            return us;
+            return User;
              
         }
         return null;
     }
     
+    public boolean addUser(user User)
+    {
+        if(users.containsKey(User.getUserName())) //prevents the two user with same name 
+        {
+            return false;
+        }
+        users.put(User.getUserName(),User); // store new user 
+        return true;
+    }
     
     
     

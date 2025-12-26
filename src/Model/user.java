@@ -37,6 +37,11 @@ public class user {
     {
         this.userName = userName;
     }
+    public void setRole(String role)
+    {
+        this.role = role;
+    }
+    
     
   
     

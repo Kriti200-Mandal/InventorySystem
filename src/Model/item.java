@@ -14,16 +14,16 @@ public class item {
     
    private  String product_id;
    private String name;
-   private String category;
+  // private int category;
    private int minimum_stock_alert;
    private int quantity;
    private double price;
    
-   public item(String product_id ,String name , String category , int minimum_stock_alert , int quantity, double price )
+   public item(String product_id ,String name ,  int minimum_stock_alert , int quantity, double price )
    {
        this.product_id = product_id;
         this.name = name;
-        this.category = category;
+        //this.category = category;
          this.minimum_stock_alert = minimum_stock_alert;
          this.quantity = quantity;
           this.price = price;
@@ -37,10 +37,10 @@ public class item {
    {
        return name;
    }
-   public String getCategory()
+   /*public int getCategory()
    {
        return category;
-   }
+   }*/
    public int getMinimum()
    {
        return minimum_stock_alert;
@@ -63,10 +63,10 @@ public class item {
    {
        this.name = Name;
    }
-   public void setCategory(String Category)
+  /* public void setCategory(int Category)
    {
        this.category = Category;
-   }
+   }*/
    public void setMinimum(int minimum_stock_alert)
    {
        this.minimum_stock_alert = minimum_stock_alert;
