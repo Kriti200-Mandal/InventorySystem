@@ -8,6 +8,9 @@ import Model.InventoryModel;
 import Model.UserModel;
 import javax.swing.JOptionPane;
 import View.AdminView;
+import Model.item;
+import Model.Sale;
+import java.time.LocalDateTime;
 import Controller.LoginController;
 
 
@@ -30,6 +33,17 @@ public class LoginView extends javax.swing.JFrame {
         this.userModel = userModel;
     this.inventoryModel = inventoryModel;
     this.saleModel = saleModel;
+    inventoryModel.addItem(new item("P001","Paracetamol",10,3,20));
+    inventoryModel.addItem(new item("P002","Vitamin C",5,4,15));
+    inventoryModel.addItem(new item("P003","Aspirin",2,5,10));
+    inventoryModel.addItem(new item("P004","Cough Syrup",8,2,50));
+    inventoryModel.addItem(new item("P005","Bandage",1,5,5));
+    
+     saleModel.addSale(new Sale("P001","Paracetamol",2,20,"user1",LocalDateTime.now()));
+    saleModel.addSale(new Sale("P002","Vitamin C",1,15,"user2",LocalDateTime.now()));
+    saleModel.addSale(new Sale("P003","Aspirin",1,10,"user3",LocalDateTime.now()));
+    saleModel.addSale(new Sale("P004","Cough Syrup",3,50,"user1",LocalDateTime.now()));
+    saleModel.addSale(new Sale("P005","Bandage",2,5,"user2",LocalDateTime.now()));
         
         //UserModel userModel = new UserModel();
         //InventoryModel inventoryModel = new InventoryModel();

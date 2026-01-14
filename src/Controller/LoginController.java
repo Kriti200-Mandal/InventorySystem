@@ -64,7 +64,7 @@ public class LoginController {
           }
           else
           {
-            new UserView(inventoryModel, saleModel,"user1").setVisible(true);  
+            new UserView(inventoryModel, saleModel,userName.trim()).setVisible(true);  
           }
           
     view.dispose();

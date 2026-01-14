@@ -42,7 +42,7 @@ public class AdminController {
             return;
         }
 
-        id = id.trim().toUpperCase(); // ⭐ CASE INSENSITIVE
+        id = id.trim().toUpperCase();
 
         if (!id.matches("^[A-Z][A-Z0-9]*$")) {
             JOptionPane.showMessageDialog(
@@ -335,6 +335,66 @@ if (!name.matches("^[A-Za-z ]+[0-9]*$")) {
         adminView.setTopProductValue(topProduct + " (" + maxSold + ")");
     }
 }
+   public void sortProducts() {
+
+    String choice = adminView.getSelectedSortOption();
+
+    java.util.ArrayList<item> list =
+            new java.util.ArrayList<>(inventoryModel.getAllItems());
+
+    // ✅ PRICE ASCENDING (Merge Sort)
+    if (choice.equals("Price (Ascending)")) {
+
+        java.util.ArrayList<item> sorted =
+                adminView.mergeSortByPriceAscending(list);
+
+        adminView.loadSortedProductData(sorted);
+    }
+
+    //  PRICE DESCENDING (Merge Sort + reverse)
+    else if (choice.equals("Price (Descending)")) {
+
+        java.util.ArrayList<item> sorted =
+                adminView.mergeSortByPriceAscending(list);
+
+        java.util.Collections.reverse(sorted); // makes it descending
+        adminView.loadSortedProductData(sorted);
+    }
+
+    //  QUANTITY ASCENDING (Insertion Sort)
+    else if (choice.equals("Quantity (Ascending)")) {
+
+        adminView.insertionSortByQuantityAscending(list);
+        adminView.loadSortedProductData(list);
+    }
+
+    //  QUANTITY DESCENDING (Insertion Sort)
+    else if (choice.equals("Quantity (Descending)")) {
+
+        adminView.insertionSortByQuantityDescending(list);
+        adminView.loadSortedProductData(list);
+    }
+
+    else {
+        JOptionPane.showMessageDialog(adminView, "Sorting option not implemented yet!");
+    }
+}
+   
+   public void undoInventory() {
+    boolean undone = inventoryModel.undo();
+
+    if (undone) {
+        adminView.refreshInventoryTable();
+        adminView.loadLowStockData();
+        adminView.updateSummary();
+        JOptionPane.showMessageDialog(adminView, "Undo Successful!");
+    } else {
+        JOptionPane.showMessageDialog(adminView, "Nothing to Undo!");
+    }
+}
+
+
+
 
 
   

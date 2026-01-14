@@ -10,6 +10,7 @@ import Model.SaleModel;
 import javax.swing.JTable;
 import Controller.UserController;
 import java.awt.*;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 
@@ -61,6 +62,9 @@ public class UserView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         productName = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
+        searchField = new javax.swing.JTextField();
+        searchCombo = new javax.swing.JComboBox<>();
+        searchbtn = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         sortCombo = new javax.swing.JComboBox<>();
@@ -89,11 +93,30 @@ public class UserView extends javax.swing.JFrame {
             new Object [][] {},
             new String [] { "Product ID", "Name", "Quantity", "Price" }
         ));
+        productName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                productNameMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(productName);
 
         ProductTable.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jLabel5.setPreferredSize(new java.awt.Dimension(350, 10));
+        searchField.setColumns(10);
+        jPanel1.add(searchField);
+
+        searchCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Linear", "Binary" }));
+        jPanel1.add(searchCombo);
+
+        searchbtn.setText("Search");
+        searchbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchbtnActionPerformed(evt);
+            }
+        });
+        jPanel1.add(searchbtn);
+
+        jLabel5.setPreferredSize(new java.awt.Dimension(200, 10));
         jPanel1.add(jLabel5);
 
         jLabel4.setText("Sort By ");
@@ -103,6 +126,11 @@ public class UserView extends javax.swing.JFrame {
         jPanel1.add(sortCombo);
 
         sortBtn.setText("Sort");
+        sortBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sortBtnActionPerformed(evt);
+            }
+        });
         jPanel1.add(sortBtn);
 
         ProductTable.add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -146,7 +174,7 @@ public class UserView extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        userController.buyProduct("user1");
+        userController.buyProduct(currentUser);
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -155,6 +183,32 @@ public class UserView extends javax.swing.JFrame {
         //new PurchaseView(saleModel).setVisible(true);
         userController.openPurchaseHistory();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void productNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_productNameMouseClicked
+        // TODO add your handling code here:
+        int row = productName.getSelectedRow();
+    if(row != -1) {
+        String pid = productName.getValueAt(row, 0).toString();
+        jTextField2.setText(pid);
+    }  
+    }//GEN-LAST:event_productNameMouseClicked
+
+    private void sortBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortBtnActionPerformed
+        // TODO add your handling code here:
+        userController.sortProducts();
+    }//GEN-LAST:event_sortBtnActionPerformed
+
+    private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
+        // TODO add your handling code here:
+        String method = searchCombo.getSelectedItem().toString(); // Linear / Binary
+
+    if (method.equalsIgnoreCase("Linear")) {
+        userController.searchProduct();   // your linear method
+    } else {
+        userController.binarySearchProduct(); //  binary
+    }
+         
+    }//GEN-LAST:event_searchbtnActionPerformed
      private void setupProductTable() {
     String[] columns = { "Product ID", "Name", "Quantity","Minimum", "Price" };
 
@@ -192,6 +246,8 @@ public class UserView extends javax.swing.JFrame {
        // InventoryModel inventoryModel = new InventoryModel();
        InventoryModel inventoryModel = new InventoryModel();
         inventoryModel.addItem(new item("P001", "Paracetamol",  3, 1, 20.00));
+        inventoryModel.addItem(new item("P002", "Paracetamol",  1, 10, 50.00));
+        inventoryModel.addItem(new item("P003", "Paracetamol",  2, 15, 30.00));
 
          SaleModel saleModel = new SaleModel();
 
@@ -268,10 +324,165 @@ public class UserView extends javax.swing.JFrame {
             
         }
     }
+    public String getSearchText() {
+    return searchField.getText();
+}
+
+
+public String getSearchType() {
+    return searchCombo.getSelectedItem().toString();
+}
+
+
     public JTable getInventoryTable()
     {
         return productName;
     }
+    public String getSelectedSortOption() {
+    return sortCombo.getSelectedItem().toString();
+}
+    // merge sort
+    public  ArrayList<item> mergeSortByPriceAscending(ArrayList<item> list) {
+
+    if (list.size() <= 1) {
+        return list;
+    }
+
+    int mid = list.size() / 2;
+
+    ArrayList<item> left = new java.util.ArrayList<>(list.subList(0, mid));
+    ArrayList<item> right = new java.util.ArrayList<>(list.subList(mid, list.size()));
+
+    left = mergeSortByPriceAscending(left);
+    right = mergeSortByPriceAscending(right);
+
+    return mergeByPriceAscending(left, right);
+}
+
+public ArrayList<item> mergeByPriceAscending(ArrayList<item> left,
+                                                        ArrayList<item> right) {
+
+    ArrayList<item> result = new ArrayList<>();
+
+    while (!left.isEmpty() && !right.isEmpty()) {
+
+        double leftPrice = left.get(0).getPrice();
+        double rightPrice = right.get(0).getPrice();
+
+        // ASCENDING
+        if (leftPrice <= rightPrice) {
+            result.add(left.remove(0));
+        } else {
+            result.add(right.remove(0));
+        }
+    }
+
+    result.addAll(left);
+    result.addAll(right);
+
+    return result;
+}
+// merge sort by descending price
+public ArrayList<item> mergeSortByPriceDescending(ArrayList<item> list) {
+
+    if (list.size() <= 1) {
+        return list;
+    }
+
+    int mid = list.size() / 2;
+
+    ArrayList<item> left = new ArrayList<>(list.subList(0, mid));
+    ArrayList<item> right = new ArrayList<>(list.subList(mid, list.size()));
+
+    left = mergeSortByPriceDescending(left);
+    right = mergeSortByPriceDescending(right);
+
+    return mergeByPriceDescending(left, right);
+}
+
+public ArrayList<item> mergeByPriceDescending(ArrayList<item> left,
+                                                         ArrayList<item> right) {
+
+    ArrayList<item> result = new java.util.ArrayList<>();
+
+    while (!left.isEmpty() && !right.isEmpty()) {
+
+        double leftPrice = left.get(0).getPrice();
+        double rightPrice = right.get(0).getPrice();
+
+        //  DESCENDING
+        if (leftPrice >= rightPrice) {
+            result.add(left.remove(0));
+        } else {
+            result.add(right.remove(0));
+        }
+    }
+
+    result.addAll(left);
+    result.addAll(right);
+
+    return result;
+}
+// asscending  insertion by quantity
+public void insertionSortByQuantityAscending(java.util.ArrayList<item> list) {
+
+    int size = list.size();
+
+    for (int step = 1; step < size; step++) {
+
+        item key = list.get(step);
+        int keyQty = key.getQuantity();
+        int j = step - 1;
+
+        while (j >= 0 && keyQty < list.get(j).getQuantity()) {
+            list.set(j + 1, list.get(j));
+            j--;
+        }
+
+        list.set(j + 1, key);
+    }
+}
+
+// insertion quantity for descending
+public static void insertionSortByQuantityDescending(java.util.ArrayList<item> list) {
+
+    int size = list.size();
+
+    for (int step = 1; step < size; step++) {
+
+        item key = list.get(step);
+        int keyQty = key.getQuantity();
+        int j = step - 1;
+
+       // DESCENDING: bigger quantity first
+        while (j >= 0 && keyQty > list.get(j).getQuantity()) {
+            list.set(j + 1, list.get(j));
+            j--;
+        }
+
+        list.set(j + 1, key);
+    }
+}
+
+
+
+public void loadSortedProductData(ArrayList<item> sortedList) {
+
+    DefaultTableModel model = (DefaultTableModel) productName.getModel();
+    model.setRowCount(0); // clear table
+
+    for (item i : sortedList) {
+        model.addRow(new Object[]{
+            i.getProductId(),
+            i.getName(),
+            i.getQuantity(),
+            i.getMinimum(),
+            i.getPrice()
+        });
+    }
+}
+
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -291,6 +502,9 @@ public class UserView extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTable productName;
+    private javax.swing.JComboBox<String> searchCombo;
+    private javax.swing.JTextField searchField;
+    private javax.swing.JButton searchbtn;
     private javax.swing.JButton sortBtn;
     private javax.swing.JComboBox<String> sortCombo;
     // End of variables declaration//GEN-END:variables

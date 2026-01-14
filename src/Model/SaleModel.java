@@ -4,6 +4,7 @@
  */
 package Model;
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  *
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 public class SaleModel {
     
     private ArrayList<Sale> sale;
+    private Stack<ArrayList<Sale>> undoStack;
     
     public SaleModel()
     {
@@ -42,6 +44,17 @@ public class SaleModel {
               return userSales;
            
 
+    }
+    public void clearSales() {
+        undoStack.push(new ArrayList<>(sale)); // Save copy
+        sale.clear();
+    }
+    public boolean undoClearSales() {
+        if (undoStack.isEmpty()) {
+            return false;
+        }
+        sale = undoStack.pop(); // restore old list
+        return true;
     }
     
             

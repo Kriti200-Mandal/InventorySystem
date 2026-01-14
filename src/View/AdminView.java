@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
 import Controller.AdminController;
+import java.util.ArrayList;
 
 
 
@@ -42,9 +43,10 @@ private JTable inventoryTable;
         initComponents();
         setupInventoryTable();
           this.inventoryModel =  inventoryModel;
-           inventoryModel.addItem(new item("P001", "Paracetamol",  10, 3, 20.00));
+           inventoryModel.addItem(new item("P001", "Paracetamol",  10, 10, 40.00));
+           
            this.saleModel =  saleModel;
-           saleModel.addSale(new Sale("P001", "Paracetamol", 2, 20.0, "user1", LocalDateTime.now()));
+          saleModel.addSale(new Sale("P001", "Paracetamol", 2, 20.0, "user1", LocalDateTime.now()));
                adminController = new AdminController(inventoryModel, saleModel, this);
           setupLowStockTable();
           loadLowStockData();
@@ -77,6 +79,7 @@ private JTable inventoryTable;
         jLabel15 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         adminCombo = new javax.swing.JComboBox<>();
+        jButton8 = new javax.swing.JButton();
         inventoryButtonPanel = new javax.swing.JPanel();
         addItemButton = new javax.swing.JButton();
         updateStockButton = new javax.swing.JButton();
@@ -208,6 +211,14 @@ private JTable inventoryTable;
         });
         title.add(adminCombo);
 
+        jButton8.setText("Sort");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        title.add(jButton8);
+
         InventoryPanel.add(title, java.awt.BorderLayout.NORTH);
 
         addItemButton.setText("Add");
@@ -297,6 +308,11 @@ private JTable inventoryTable;
         salesControlPanel.add(salesSortCombo);
 
         jButton7.setText("Clear");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
         salesControlPanel.add(jButton7);
 
         jLabel8.setText("From Date");
@@ -509,6 +525,7 @@ cl.show(ContentPanel, "inventory");
 
     private void undoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoButtonActionPerformed
         // TODO add your handling code here:
+        adminController.undoInventory();
     }//GEN-LAST:event_undoButtonActionPerformed
 
     private void addItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemButtonActionPerformed
@@ -535,6 +552,19 @@ cl.show(ContentPanel, "inventory");
     private void salesSortComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salesSortComboActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_salesSortComboActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        adminController.sortProducts();
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+         saleModel.clearSales();          // clear using stack
+    loadSalesReportTable();          // refresh table
+    updateSummary();                 // update counts
+    JOptionPane.showMessageDialog(this, "Sales Cleared!");
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     
    public void setupLowStockTable() {
@@ -733,12 +763,153 @@ public void setLowStockValue(String text) {
 public JTable getAnalyticsTable() {
     return jTable2;
 }
+public String getSelectedSortOption() {
+    return adminCombo.getSelectedItem().toString();
+}
 
 
 
+  // sorting
+public  ArrayList<item> mergeSortByPriceAscending(ArrayList<item> list) {
 
-   
+    if (list.size() <= 1) {
+        return list;
+    }
 
+    int mid = list.size() / 2;
+
+    ArrayList<item> left = new java.util.ArrayList<>(list.subList(0, mid));
+    ArrayList<item> right = new java.util.ArrayList<>(list.subList(mid, list.size()));
+
+    left = mergeSortByPriceAscending(left);
+    right = mergeSortByPriceAscending(right);
+
+    return mergeByPriceAscending(left, right);
+}
+
+public ArrayList<item> mergeByPriceAscending(ArrayList<item> left,
+                                                        ArrayList<item> right) {
+
+    ArrayList<item> result = new ArrayList<>();
+
+    while (!left.isEmpty() && !right.isEmpty()) {
+
+        double leftPrice = left.get(0).getPrice();
+        double rightPrice = right.get(0).getPrice();
+
+        // ASCENDING
+        if (leftPrice <= rightPrice) {
+            result.add(left.remove(0));
+        } else {
+            result.add(right.remove(0));
+        }
+    }
+
+    result.addAll(left);
+    result.addAll(right);
+
+    return result;
+}
+
+// merge sort by descending price
+public ArrayList<item> mergeSortByPriceDescending(ArrayList<item> list) {
+
+    if (list.size() <= 1) {
+        return list;
+    }
+
+    int mid = list.size() / 2;
+
+    ArrayList<item> left = new ArrayList<>(list.subList(0, mid));
+    ArrayList<item> right = new ArrayList<>(list.subList(mid, list.size()));
+
+    left = mergeSortByPriceDescending(left);
+    right = mergeSortByPriceDescending(right);
+
+    return mergeByPriceDescending(left, right);
+}
+
+public ArrayList<item> mergeByPriceDescending(ArrayList<item> left,
+                                                         ArrayList<item> right) {
+
+    ArrayList<item> result = new java.util.ArrayList<>();
+
+    while (!left.isEmpty() && !right.isEmpty()) {
+
+        double leftPrice = left.get(0).getPrice();
+        double rightPrice = right.get(0).getPrice();
+
+        //  DESCENDING
+        if (leftPrice >= rightPrice) {
+            result.add(left.remove(0));
+        } else {
+            result.add(right.remove(0));
+        }
+    }
+
+    result.addAll(left);
+    result.addAll(right);
+
+    return result;
+}
+// asscending  insertion by quantity
+public void insertionSortByQuantityAscending(java.util.ArrayList<item> list) {
+
+    int size = list.size();
+
+    for (int step = 1; step < size; step++) {
+
+        item key = list.get(step);
+        int keyQty = key.getQuantity();
+        int j = step - 1;
+
+        while (j >= 0 && keyQty < list.get(j).getQuantity()) {
+            list.set(j + 1, list.get(j));
+            j--;
+        }
+
+        list.set(j + 1, key);
+    }
+}
+
+// insertion quantity for descending
+public static void insertionSortByQuantityDescending(java.util.ArrayList<item> list) {
+
+    int size = list.size();
+
+    for (int step = 1; step < size; step++) {
+
+        item key = list.get(step);
+        int keyQty = key.getQuantity();
+        int j = step - 1;
+
+       // DESCENDING: bigger quantity first
+        while (j >= 0 && keyQty > list.get(j).getQuantity()) {
+            list.set(j + 1, list.get(j));
+            j--;
+        }
+
+        list.set(j + 1, key);
+    }
+}
+
+
+
+public void loadSortedProductData(ArrayList<item> sortedList) {
+
+    DefaultTableModel model = (DefaultTableModel) inventoryTable.getModel();
+    model.setRowCount(0); // clear table
+
+    for (item i : sortedList) {
+        model.addRow(new Object[]{
+            i.getProductId(),
+            i.getName(),
+            i.getQuantity(),
+            i.getMinimum(),
+            i.getPrice()
+        });
+    }
+}
 
 
 
@@ -805,6 +976,7 @@ java.awt.EventQueue.invokeLater(() ->
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
