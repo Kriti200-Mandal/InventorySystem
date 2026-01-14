@@ -5,9 +5,15 @@
 package inventory_system;
 
 /**
+ *  * 
+
  *
  * @author dell
  */
+/*import Model.InventoryModel;
+import Model.SaleModel;
+import Model.UserModel;
+import View.LoginView;*/
 public class Inventory_System {
 
     /**
@@ -15,6 +21,14 @@ public class Inventory_System {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-    }
+       /* InventoryModel inventoryModel = new InventoryModel();
+        SaleModel saleModel = new SaleModel();
+        UserModel userModel = new UserModel();
+
+        java.awt.EventQueue.invokeLater(() -> {
+            new LoginView(userModel, inventoryModel, saleModel).setVisible(true);
+        });
+    }*/
     
+    }
 }

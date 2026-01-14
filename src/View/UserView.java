@@ -7,6 +7,12 @@ import javax.swing.table.DefaultTableModel;
 import Model.InventoryModel;
 import Model.item;
 import Model.SaleModel;
+import javax.swing.JTable;
+import Controller.UserController;
+import java.awt.*;
+import javax.swing.JOptionPane;
+
+
 
 /**
  *
@@ -15,18 +21,28 @@ import Model.SaleModel;
 public class UserView extends javax.swing.JFrame {
     private InventoryModel inventoryModel;
     private SaleModel saleModel;
+    private boolean lowStockAlertShown = false;
+    private UserController userController;
+    private String currentUser;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(UserView.class.getName());
 
     /**
      * Creates new form UserView
      */
-    public UserView(InventoryModel inventoryModel , SaleModel saleModel) {
+    public UserView(InventoryModel inventoryModel , SaleModel saleModel,String username) {
        this.inventoryModel = inventoryModel;
        this.saleModel =  saleModel;
+      this.currentUser = username;
+       userController = new UserController(inventoryModel, saleModel, this);
         initComponents();
          //this.inventoryModel = inventoryModel;
          setupProductTable();
          loadProductData();
+         lowStock();
+         
+         
+         
+
           
     }
 
@@ -44,10 +60,19 @@ public class UserView extends javax.swing.JFrame {
         ProductTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         productName = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        sortCombo = new javax.swing.JComboBox<>();
+        sortBtn = new javax.swing.JButton();
         BuyPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("User View");
@@ -68,52 +93,70 @@ public class UserView extends javax.swing.JFrame {
 
         ProductTable.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
+        jLabel5.setPreferredSize(new java.awt.Dimension(350, 10));
+        jPanel1.add(jLabel5);
+
+        jLabel4.setText("Sort By ");
+        jPanel1.add(jLabel4);
+
+        sortCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Price (Ascending)", "Price (Descending)", "Quantity (Ascending)", "Quantity (Descending)", "Name (A-Z)", "Name (Z-A)" }));
+        jPanel1.add(sortCombo);
+
+        sortBtn.setText("Sort");
+        jPanel1.add(sortBtn);
+
+        ProductTable.add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
         getContentPane().add(ProductTable, java.awt.BorderLayout.CENTER);
 
-        jLabel2.setText("Quantity");
+        jLabel2.setText("Product id");
+        BuyPanel.add(jLabel2);
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
+        jTextField2.setEditable(false);
+        jTextField2.setColumns(15);
+        BuyPanel.add(jTextField2);
+
+        jLabel3.setText("Quantity");
+        BuyPanel.add(jLabel3);
+
+        jTextField1.setColumns(15);
+        BuyPanel.add(jTextField1);
 
         jButton1.setText("Buy");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        BuyPanel.add(jButton1);
+        BuyPanel.add(jTabbedPane1);
 
-        javax.swing.GroupLayout BuyPanelLayout = new javax.swing.GroupLayout(BuyPanel);
-        BuyPanel.setLayout(BuyPanelLayout);
-        BuyPanelLayout.setHorizontalGroup(
-            BuyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(BuyPanelLayout.createSequentialGroup()
-                .addGap(61, 61, 61)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(62, 62, 62)
-                .addComponent(jButton1)
-                .addContainerGap(262, Short.MAX_VALUE))
-        );
-        BuyPanelLayout.setVerticalGroup(
-            BuyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, BuyPanelLayout.createSequentialGroup()
-                .addContainerGap(346, Short.MAX_VALUE)
-                .addGroup(BuyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addContainerGap())
-        );
+        jButton3.setText("Purchase History");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        BuyPanel.add(jButton3);
 
-        getContentPane().add(BuyPanel, java.awt.BorderLayout.PAGE_END);
+        getContentPane().add(BuyPanel, java.awt.BorderLayout.SOUTH);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+        userController.buyProduct("user1");
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        //new PurchaseView(saleModel).setVisible(true);
+        userController.openPurchaseHistory();
+    }//GEN-LAST:event_jButton3ActionPerformed
      private void setupProductTable() {
-    String[] columns = { "Product ID", "Name", "Quantity", "Price" };
+    String[] columns = { "Product ID", "Name", "Quantity","Minimum", "Price" };
 
     DefaultTableModel model = new DefaultTableModel(columns, 0) {
         @Override
@@ -146,26 +189,89 @@ public class UserView extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        InventoryModel inventoryModel = new InventoryModel();
+       // InventoryModel inventoryModel = new InventoryModel();
+       InventoryModel inventoryModel = new InventoryModel();
+        inventoryModel.addItem(new item("P001", "Paracetamol",  3, 1, 20.00));
+
          SaleModel saleModel = new SaleModel();
 
-java.awt.EventQueue.invokeLater(() -> new UserView(inventoryModel, saleModel).setVisible(true));
+/*java.awt.EventQueue.invokeLater(() -> new UserView(inventoryModel, saleModel).setVisible(true));*/
+
+        UserView view = new UserView(inventoryModel,saleModel, "user1");
+      view.setVisible(true);
+      view.showLowStock();
+
         
         /*java.awt.EventQueue.invokeLater(() -> new UserView().setVisible(true));*/
     }
-    private void loadProductData() {
+    public void loadProductData() {
     DefaultTableModel model = (DefaultTableModel) productName.getModel();
-    model.setRowCount(0); // clear table first
+    model.setRowCount(0); 
 
     for (item i : inventoryModel.getAllItems()) {
         model.addRow(new Object[] {
             i.getProductId(),
             i.getName(),
             i.getQuantity(),
+            i.getMinimum(),
             i.getPrice()
         });
+       
     }
 }
+    public void lowStock()
+    {
+       productName.setSelectionBackground(Color.PINK);
+       productName.setSelectionForeground(Color.BLACK);
+       productName.clearSelection();
+       for (int row = 0; row<productName.getRowCount(); row++)
+       {
+           int quantity = Integer.parseInt(productName.getValueAt(row, 2).toString());
+           int minimum = Integer.parseInt(productName.getValueAt(row, 3).toString());
+           
+           if (quantity<= minimum)
+           {
+               productName.addRowSelectionInterval(row , row);
+           }
+                  
+           
+       }
+       
+       
+        
+       
+    }
+    private void showLowStock()
+    {
+        if(lowStockAlertShown)
+        {
+            return ; // alerady shown 
+        }
+        boolean hasLowStock = false;
+        for(item i: inventoryModel.getAllItems())
+        {
+            if(i.getQuantity()<=i.getMinimum())
+            {
+                hasLowStock = true;
+                break;
+            }
+        }
+        if(hasLowStock)
+        {
+            java.awt.Toolkit.getDefaultToolkit().beep();
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                    "Some products are running low on stock!",
+                    "Low Stock alert",
+                    javax.swing.JOptionPane.WARNING_MESSAGE
+                 );
+            lowStockAlertShown = true;
+            
+        }
+    }
+    public JTable getInventoryTable()
+    {
+        return productName;
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -173,10 +279,19 @@ java.awt.EventQueue.invokeLater(() -> new UserView(inventoryModel, saleModel).se
     private javax.swing.JPanel ProductTable;
     private javax.swing.JPanel TitlePanel;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JTable productName;
+    private javax.swing.JButton sortBtn;
+    private javax.swing.JComboBox<String> sortCombo;
     // End of variables declaration//GEN-END:variables
 }

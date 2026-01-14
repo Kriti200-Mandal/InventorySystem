@@ -5,8 +5,10 @@
 package View;
 import Model.SaleModel;
 import Model.InventoryModel;
+import Model.UserModel;
 import javax.swing.JOptionPane;
 import View.AdminView;
+import Controller.LoginController;
 
 
 /**
@@ -14,19 +16,29 @@ import View.AdminView;
  * @author dell
  */
 public class LoginView extends javax.swing.JFrame {
+    private SaleModel saleModel;
+    private UserModel userModel;
     private InventoryModel inventoryModel;
-private SaleModel saleModel;
-
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginView.class.getName());
+    private LoginController controller;
+   private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginView.class.getName());
 
     /**
      * Creates new form LoginView
      */
-    public LoginView() {
+    public LoginView(UserModel userModel, InventoryModel inventoryModel, SaleModel saleModel) {
         initComponents();
-         inventoryModel = new InventoryModel();
-    saleModel = new SaleModel();
+        this.userModel = userModel;
+    this.inventoryModel = inventoryModel;
+    this.saleModel = saleModel;
+        
+        //UserModel userModel = new UserModel();
+        //InventoryModel inventoryModel = new InventoryModel();
+        //SaleModel saleModel = new SaleModel();
+        controller = new LoginController(this, userModel , inventoryModel , saleModel);
+        
+        
+        
+         
     }
 
     /**
@@ -39,16 +51,13 @@ private SaleModel saleModel;
     private void initComponents() {
 
         MainPanel = new javax.swing.JPanel();
-        HeaderPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        CentralPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        UserName = new javax.swing.JLabel();
-        userName = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        FooterPanel = new javax.swing.JPanel();
+        UserType = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        userNameField = new javax.swing.JTextField();
+        PasswordField = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -57,55 +66,43 @@ private SaleModel saleModel;
         setMinimumSize(new java.awt.Dimension(800, 500));
         setSize(new java.awt.Dimension(600, 400));
 
-        MainPanel.setMaximumSize(new java.awt.Dimension(400, 250));
-        MainPanel.setMinimumSize(new java.awt.Dimension(400, 250));
-        MainPanel.setPreferredSize(new java.awt.Dimension(400, 250));
-        MainPanel.setLayout(new java.awt.BorderLayout());
+        MainPanel.setBackground(new java.awt.Color(245, 246, 250));
+        MainPanel.setLayout(new javax.swing.BoxLayout(MainPanel, javax.swing.BoxLayout.LINE_AXIS));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
-        jLabel1.setText("Smart Inventory Alert System");
-        HeaderPanel.add(jLabel1);
+        jLabel1.setBackground(new java.awt.Color(235, 235, 235));
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(33, 33, 33));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("                                    Smart Inventory Alert System");
 
-        MainPanel.add(HeaderPanel, java.awt.BorderLayout.PAGE_START);
+        jLabel2.setText("User Name");
 
-        CentralPanel.setLayout(new java.awt.GridLayout(3, 2, 10, 10));
+        UserType.setText("User Type");
 
-        jLabel2.setText("User Type ");
-        CentralPanel.add(jLabel2);
+        jLabel4.setText("Password");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "User", " " }));
-        jComboBox2.setMaximumSize(new java.awt.Dimension(180, 30));
-        jComboBox2.setPreferredSize(new java.awt.Dimension(30, 15));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "User" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+                jComboBox1ActionPerformed(evt);
             }
         });
-        CentralPanel.add(jComboBox2);
 
-        UserName.setText("UserName ");
-        CentralPanel.add(UserName);
-        CentralPanel.add(userName);
+        userNameField.setPreferredSize(new java.awt.Dimension(220, 32));
 
-        jLabel5.setText("Password");
-        CentralPanel.add(jLabel5);
+        PasswordField.setPreferredSize(new java.awt.Dimension(220, 32));
 
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
-            }
-        });
-        CentralPanel.add(jPasswordField1);
-
-        MainPanel.add(CentralPanel, java.awt.BorderLayout.CENTER);
-
+        jButton1.setBackground(new java.awt.Color(52, 152, 219));
         jButton1.setText("Login");
+        jButton1.setBorderPainted(false);
+        jButton1.setFocusPainted(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(220, 220, 220));
         jButton2.setText("Cancel");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,90 +110,80 @@ private SaleModel saleModel;
             }
         });
 
-        javax.swing.GroupLayout FooterPanelLayout = new javax.swing.GroupLayout(FooterPanel);
-        FooterPanel.setLayout(FooterPanelLayout);
-        FooterPanelLayout.setHorizontalGroup(
-            FooterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FooterPanelLayout.createSequentialGroup()
-                .addGap(129, 129, 129)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(92, 92, 92)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(342, Short.MAX_VALUE))
-        );
-        FooterPanelLayout.setVerticalGroup(
-            FooterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(FooterPanelLayout.createSequentialGroup()
-                .addGroup(FooterPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 75, Short.MAX_VALUE))
-        );
-
-        MainPanel.add(FooterPanel, java.awt.BorderLayout.SOUTH);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 810, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 828, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(214, 214, 214)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(UserType, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(40, 40, 40)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(userNameField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(PasswordField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(274, 274, 274)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addComponent(jButton2)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addComponent(MainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(92, 92, 92)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(UserType, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(userNameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(PasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPasswordField1ActionPerformed
+    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        String userType = jComboBox2.getSelectedItem().toString();
-        String username = userName.getText();
-        if(!username .matches("[a-zA-Z]+"))
-        {
-            JOptionPane.showMessageDialog(
-            this, 
-              "Username must containh only letters",
-              "Invalid Input",
-              JOptionPane.ERROR_MESSAGE
-            );
-            return;
-        }
-        String password = new String(jPasswordField1.getPassword());
-        if (username.isEmpty() || password.isEmpty())
-        {
-            JOptionPane.showMessageDialog(this, "Username and password are required!",
-                    "Error",
-            JOptionPane.ERROR_MESSAGE
-                    );
-            return;
-        }
-        if (userType.equals("Admin"))
-        {
-            AdminView adminView = new AdminView(inventoryModel, saleModel);
-            adminView.setVisible(true);
-            this.dispose();
-        }
-        else
-        {
-            UserView userView = new UserView(inventoryModel, saleModel);
-             userView.setVisible(true);
-            this.dispose();
-        }
         
-        
-        
-        
-        
+        String userName = userNameField.getText();
+        String password = new String (PasswordField.getPassword());
+        String userType = jComboBox1.getSelectedItem().toString();
+        controller.handleLogin(userName, password,userType);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -227,24 +214,30 @@ private SaleModel saleModel;
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new LoginView().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> {
+    InventoryModel inventoryModel = new InventoryModel();
+    SaleModel saleModel = new SaleModel();
+    UserModel userModel = new UserModel();
+
+    new LoginView(userModel, inventoryModel, saleModel).setVisible(true);
+});
+
+               // new LoginView().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel CentralPanel;
-    private javax.swing.JPanel FooterPanel;
-    private javax.swing.JPanel HeaderPanel;
     private javax.swing.JPanel MainPanel;
-    private javax.swing.JLabel UserName;
+    private javax.swing.JPasswordField PasswordField;
+    private javax.swing.JLabel UserType;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField userName;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JTextField userNameField;
     // End of variables declaration//GEN-END:variables
 }

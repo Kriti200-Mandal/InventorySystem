@@ -5,7 +5,6 @@
 package Model;
 import java.util.Stack;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  *
@@ -86,6 +85,15 @@ public class InventoryModel {
     }
     return false;
 }
+         public item getItemById(String productId) {
+    for (item i : Items) {
+        if (i.getProductId().equalsIgnoreCase(productId)) {
+            return i;
+        }
+    }
+    return null;
+}
+
           
         
         

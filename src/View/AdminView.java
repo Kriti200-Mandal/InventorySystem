@@ -15,6 +15,7 @@ import Model.Sale;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
+import Controller.AdminController;
 
 
 
@@ -29,6 +30,7 @@ public class AdminView extends javax.swing.JFrame {
   private InventoryModel inventoryModel;
   private JTable recentSalesTable;
 private SaleModel saleModel;
+private AdminController adminController; 
 private JTable inventoryTable;
 
 
@@ -40,14 +42,15 @@ private JTable inventoryTable;
         initComponents();
         setupInventoryTable();
           this.inventoryModel =  inventoryModel;
-            inventoryModel.addItem(new item("P001", "Paracetamol",  10, 3, 20.00));
+           inventoryModel.addItem(new item("P001", "Paracetamol",  10, 3, 20.00));
            this.saleModel =  saleModel;
            saleModel.addSale(new Sale("P001", "Paracetamol", 2, 20.0, "user1", LocalDateTime.now()));
-
+               adminController = new AdminController(inventoryModel, saleModel, this);
           setupLowStockTable();
           loadLowStockData();
           setupRecentSalesTable();
           loadRecentSalesData();
+          loadSalesReportTable();
           updateSummary() ;
           refreshInventoryTable();
     }
@@ -61,6 +64,7 @@ private JTable inventoryTable;
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        adminSort = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -70,6 +74,9 @@ private JTable inventoryTable;
         InventoryPanel = new javax.swing.JPanel();
         title = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        adminCombo = new javax.swing.JComboBox<>();
         inventoryButtonPanel = new javax.swing.JPanel();
         addItemButton = new javax.swing.JButton();
         updateStockButton = new javax.swing.JButton();
@@ -78,8 +85,40 @@ private JTable inventoryTable;
         inventoryTablePanel = new javax.swing.JPanel();
         SalePanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        salesTitlePanel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        salesTablePanel = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        salesControlPanel = new javax.swing.JPanel();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        salesSortCombo = new javax.swing.JComboBox<>();
+        jButton7 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
         Analytics = new javax.swing.JPanel();
+        SummaryPanel = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabelTotalProducts = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabelTotalSale = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabelLowStock = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jTopProduct = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        Title = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        analyticsTablePanel = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
         Dashboard = new javax.swing.JPanel();
         titlePanel = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -94,9 +133,15 @@ private JTable inventoryTable;
         lowStockLabel = new javax.swing.JLabel();
         totalSalesLabel = new javax.swing.JLabel();
 
+        adminSort.setText("Sort");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Smart Inventory System Admin Panel");
 
+        jPanel1.setBackground(new java.awt.Color(52, 152, 219));
+
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(44, 62, 80));
         jButton1.setText("Dashboard");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,6 +150,8 @@ private JTable inventoryTable;
         });
         jPanel1.add(jButton1);
 
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(44, 62, 80));
         jButton2.setText("Inventory");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,6 +160,8 @@ private JTable inventoryTable;
         });
         jPanel1.add(jButton2);
 
+        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(44, 62, 80));
         jButton3.setText("Sales");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -121,6 +170,8 @@ private JTable inventoryTable;
         });
         jPanel1.add(jButton3);
 
+        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(44, 62, 80));
         jButton4.setText("Analytics");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,6 +192,21 @@ private JTable inventoryTable;
         jLabel7.setText("Inventory Management");
         jLabel7.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         title.add(jLabel7);
+
+        jLabel15.setPreferredSize(new java.awt.Dimension(200, 10));
+        title.add(jLabel15);
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        jLabel13.setText("Sort By");
+        title.add(jLabel13);
+
+        adminCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Price (Ascending)", " ", "Price (Descending)", " ", "Quantity (Ascending)", " ", "Quantity (Descending)", " ", "Name (A-Z)", " ", "Name (Z-A)" }));
+        adminCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adminComboActionPerformed(evt);
+            }
+        });
+        title.add(adminCombo);
 
         InventoryPanel.add(title, java.awt.BorderLayout.NORTH);
 
@@ -188,19 +254,143 @@ private JTable inventoryTable;
         jLabel2.setText("Sale");
         SalePanel.add(jLabel2, java.awt.BorderLayout.CENTER);
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel1.setText("Sales Report");
+        salesTitlePanel.add(jLabel1);
+
+        SalePanel.add(salesTitlePanel, java.awt.BorderLayout.PAGE_START);
+
+        salesTablePanel.setLayout(new java.awt.BorderLayout());
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Sale Id", "Product Name", "Quantity", "Price", "User", "Date"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable1);
+
+        salesTablePanel.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        jButton5.setText("Refresh");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        salesControlPanel.add(jButton5);
+
+        jButton6.setText("Sort");
+        salesControlPanel.add(jButton6);
+
+        salesSortCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Date (Newest First)", "Date (Oldest First)", "Price (High to Low)", "Price (Low to High)", "Quantity (High to Low)", "Quantity (Low to High)", "Product Name (A-Z)", "Product Name (Z-A)", "User (A-Z)", "User (Z-A)" }));
+        salesSortCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salesSortComboActionPerformed(evt);
+            }
+        });
+        salesControlPanel.add(salesSortCombo);
+
+        jButton7.setText("Clear");
+        salesControlPanel.add(jButton7);
+
+        jLabel8.setText("From Date");
+        jPanel2.add(jLabel8);
+
+        jTextField1.setColumns(15);
+        jPanel2.add(jTextField1);
+
+        jLabel9.setText("To Date");
+        jPanel2.add(jLabel9);
+
+        jTextField2.setColumns(15);
+        jPanel2.add(jTextField2);
+
+        salesControlPanel.add(jPanel2);
+
+        salesTablePanel.add(salesControlPanel, java.awt.BorderLayout.PAGE_END);
+
+        SalePanel.add(salesTablePanel, java.awt.BorderLayout.CENTER);
+
         ContentPanel.add(SalePanel, "sale");
 
         Analytics.setLayout(new java.awt.BorderLayout());
 
-        jLabel3.setText("Sale");
-        Analytics.add(jLabel3, java.awt.BorderLayout.PAGE_START);
+        SummaryPanel.setLayout(new java.awt.GridLayout(2, 2, 30, 30));
+
+        jLabelTotalProducts.setText("Total Products");
+        jPanel3.add(jLabelTotalProducts);
+
+        jLabel14.setText("0");
+        jPanel3.add(jLabel14);
+
+        SummaryPanel.add(jPanel3);
+
+        jLabelTotalSale.setText("Total Sales");
+        jPanel4.add(jLabelTotalSale);
+
+        jLabel10.setText("0");
+        jPanel4.add(jLabel10);
+
+        SummaryPanel.add(jPanel4);
+
+        jLabelLowStock.setText("Low Stock");
+        jPanel5.add(jLabelLowStock);
+
+        jLabel11.setText("0");
+        jPanel5.add(jLabel11);
+
+        SummaryPanel.add(jPanel5);
+
+        jTopProduct.setText("Top Products");
+        jPanel6.add(jTopProduct);
+
+        jLabel12.setText("0");
+        jPanel6.add(jLabel12);
+
+        SummaryPanel.add(jPanel6);
+
+        Analytics.add(SummaryPanel, java.awt.BorderLayout.CENTER);
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
+        jLabel3.setText("Analytics");
+        Title.add(jLabel3);
+
+        Analytics.add(Title, java.awt.BorderLayout.NORTH);
+
+        analyticsTablePanel.setLayout(new java.awt.BorderLayout());
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Product Name", "Total Sale", "Total Revenue"
+            }
+        ));
+        jScrollPane3.setViewportView(jTable2);
+
+        analyticsTablePanel.add(jScrollPane3, java.awt.BorderLayout.CENTER);
+
+        Analytics.add(analyticsTablePanel, java.awt.BorderLayout.SOUTH);
 
         ContentPanel.add(Analytics, "analytics");
 
         Dashboard.setLayout(new java.awt.BorderLayout());
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(44, 62, 80));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Admin Dashboard");
+        jLabel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 1, 1));
         titlePanel.add(jLabel5);
 
         Dashboard.add(titlePanel, java.awt.BorderLayout.PAGE_START);
@@ -210,8 +400,11 @@ private JTable inventoryTable;
         lowStockPanel.setLayout(new java.awt.BorderLayout());
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(231, 76, 60));
         jLabel4.setText("Low Stock Alert");
         lowStockPanel.add(jLabel4, java.awt.BorderLayout.PAGE_START);
+
+        jScrollPane1.setBackground(new java.awt.Color(236, 240, 241));
         lowStockPanel.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         dashboardCenteralPanel.add(lowStockPanel);
@@ -219,14 +412,19 @@ private JTable inventoryTable;
         recentSalesPanel.setLayout(new java.awt.BorderLayout());
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
-        jLabel6.setText("Recent Sales");
+        jLabel6.setForeground(new java.awt.Color(39, 174, 96));
+        jLabel6.setText("                   Recent Sales");
         recentSalesPanel.add(jLabel6, java.awt.BorderLayout.PAGE_START);
 
         dashboardCenteralPanel.add(recentSalesPanel);
 
         Dashboard.add(dashboardCenteralPanel, java.awt.BorderLayout.CENTER);
 
+        summaryPanel.setBackground(new java.awt.Color(245, 247, 250));
         summaryPanel.setLayout(new java.awt.GridLayout(1, 3));
+
+        totalProductsLabel.setBackground(new java.awt.Color(52, 152, 219));
+        totalProductsLabel.setText("Total Products");
         summaryPanel.add(totalProductsLabel);
         summaryPanel.add(lowStockLabel);
 
@@ -246,6 +444,7 @@ private JTable inventoryTable;
         // TODO add your handling code here:
         CardLayout cl = (CardLayout) ContentPanel.getLayout();
     cl.show(ContentPanel, "analytics");
+     adminController.loadAnalytics();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -264,11 +463,13 @@ cl.show(ContentPanel, "inventory");
         // TODO add your handling code here:
          CardLayout cl = (CardLayout) ContentPanel.getLayout();
     cl.show(ContentPanel, "sale");
+    loadSalesReportTable();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void deleteItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteItemButtonActionPerformed
         // TODO add your handling code here:
-         int row = inventoryTable.getSelectedRow();
+        adminController.deleteProduct();
+        /* int row = inventoryTable.getSelectedRow();
          if (row == -1) {
         JOptionPane.showMessageDialog(
             this,
@@ -302,7 +503,7 @@ cl.show(ContentPanel, "inventory");
             "Error",
             JOptionPane.ERROR_MESSAGE
         );
-    }
+    }*/
 
     }//GEN-LAST:event_deleteItemButtonActionPerformed
 
@@ -312,188 +513,31 @@ cl.show(ContentPanel, "inventory");
 
     private void addItemButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemButtonActionPerformed
         // TODO add your handling code here:
-         
-        try {
-        String id = JOptionPane.showInputDialog(this, "Enter Product ID:");
-
-        if (id == null || id.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Product ID cannot be empty!");
-            return;
-        }
-
-        id = id.trim().toUpperCase(); // ⭐ CASE INSENSITIVE
-
-        if (!id.matches("^[A-Z][A-Z0-9]*$")) {
-            JOptionPane.showMessageDialog(
-                this,
-                "Invalid Product ID!\nIt must start with a letter.",
-                "Invalid Input",
-                JOptionPane.ERROR_MESSAGE
-            );
-            return;
-        }
-
-        String name = JOptionPane.showInputDialog(this, "Enter Product Name:");
-
-if (name == null || name.trim().isEmpty()) {
-    JOptionPane.showMessageDialog(this, "Product name cannot be empty!");
-    return;
-}
-
-if (!name.matches("^[A-Za-z ]+[0-9]*$")) {
-    JOptionPane.showMessageDialog(
-        this,
-        "Invalid Product Name!",
-        "Invalid Input",
-        JOptionPane.ERROR_MESSAGE
-    );
-    return;
-}
-
-        int quantity;
-        try
-        {
-            quantity = Integer.parseInt(
-            JOptionPane.showInputDialog(this, "Enter Quantity:")
-        );
-                if (quantity <= 0) {
-        JOptionPane.showMessageDialog(
-            this,
-            "Price must be greater than 0!",
-            "Invalid Input",
-            JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-        }
-        catch (NumberFormatException e) {
-    JOptionPane.showMessageDialog(
-        this,
-        "Invalid Price!\nPlease enter a numeric value.",
-        "Invalid Input",
-        JOptionPane.ERROR_MESSAGE
-    );
-    return;
-}
+         adminController.addProduct();
        
-        int minimum = Integer.parseInt(
-            JOptionPane.showInputDialog(this, "Enter Minimum Stock:")
-        );
-        double price;
-        try{
-             price= Double.parseDouble(
-            JOptionPane.showInputDialog(this, "Enter Price:")
-        );
-              if (price <= 0) {
-        JOptionPane.showMessageDialog(
-            this,
-            "Price must be greater than 0!",
-            "Invalid Input",
-            JOptionPane.ERROR_MESSAGE
-        );
-        return;
-    }
-             
-        }catch (NumberFormatException e) {
-    JOptionPane.showMessageDialog(
-        this,
-        "Invalid Price!\nPlease enter a numeric value.",
-        "Invalid Input",
-        JOptionPane.ERROR_MESSAGE
-    );
-    return;
-}
-        
-
-        if ( minimum < 0 ) {
-            JOptionPane.showMessageDialog(
-                this,
-                " Minimum  must be positive!",
-                "Invalid Input",
-                JOptionPane.ERROR_MESSAGE
-            );
-            return;
-        }
-
-        item newItem = new item(id, name, quantity, minimum, price);
-
-        boolean added = inventoryModel.addItem(newItem);
-
-        if (added) {
-            refreshInventoryTable();
-            loadLowStockData();   
-             updateSummary(); 
-             
-            JOptionPane.showMessageDialog(this, "Item added successfully!");
-        } else {
-            JOptionPane.showMessageDialog(
-                this,
-                "Product ID already exists!",
-                "Duplicate Error",
-                JOptionPane.ERROR_MESSAGE
-            );
-        }
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(
-            this,
-            "Please enter valid numeric values!",
-            "Invalid Input",
-            JOptionPane.ERROR_MESSAGE
-        );
-    }
     }//GEN-LAST:event_addItemButtonActionPerformed
 
     private void updateStockButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateStockButtonActionPerformed
         // TODO add your handling code here:
-        
-        int row = inventoryTable.getSelectedRow();
-
-    if (row == -1) {
-        JOptionPane.showMessageDialog(this,
-            "Select a product to update!",
-            "No Selection",
-            JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-
-    String productId = inventoryTable.getValueAt(row, 0).toString();
-
-    try {
-        int quantity = Integer.parseInt(
-            JOptionPane.showInputDialog(this, "Enter New Quantity:")
-        );
-
-        int minimum = Integer.parseInt(
-            JOptionPane.showInputDialog(this, "Enter New Minimum Stock:")
-        );
-
-        double price = Double.parseDouble(
-            JOptionPane.showInputDialog(this, "Enter New Price:")
-        );
-
-        if (quantity < 0 || minimum < 0 || price <= 0) {
-            JOptionPane.showMessageDialog(this, "Invalid values entered!");
-            return;
-        }
-
-        inventoryModel.updateItem(productId, quantity, minimum, price);
-        refreshInventoryTable();
-        loadLowStockData();
-        updateSummary();
-
-        JOptionPane.showMessageDialog(this, "Item updated successfully!");
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this,
-            "Please enter valid numeric values!",
-            "Invalid Input",
-            JOptionPane.ERROR_MESSAGE);
-    }
+        adminController.updateProduct();
+       
     }//GEN-LAST:event_updateStockButtonActionPerformed
 
+    private void adminComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_adminComboActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        loadSalesReportTable();
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void salesSortComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salesSortComboActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_salesSortComboActionPerformed
+
     
-    private void setupLowStockTable() {
+   public void setupLowStockTable() {
 
     String[] columns = { "Product Name", "Quantity", "Minimum" };
 
@@ -504,7 +548,7 @@ if (!name.matches("^[A-Za-z ]+[0-9]*$")) {
 
     lowStockPanel.add(scrollPane, BorderLayout.CENTER);
 }
-    private void loadLowStockData() {
+    public void loadLowStockData() {
 
     DefaultTableModel model = (DefaultTableModel) lowStockTable.getModel();
     model.setRowCount(0);
@@ -517,7 +561,7 @@ if (!name.matches("^[A-Za-z ]+[0-9]*$")) {
         });
     }
 }
-    private void setupRecentSalesTable() {
+    public void setupRecentSalesTable() {
 
     String[] columns = { "User", "Product", "Qty", "Price", "Date" };
 
@@ -527,7 +571,7 @@ if (!name.matches("^[A-Za-z ]+[0-9]*$")) {
     JScrollPane scrollPane = new JScrollPane(recentSalesTable);
     recentSalesPanel.add(scrollPane, BorderLayout.CENTER);
 }
-    private void loadRecentSalesData() {
+    public void loadRecentSalesData() {
 
     DefaultTableModel model = (DefaultTableModel) recentSalesTable.getModel();
     model.setRowCount(0);
@@ -543,7 +587,7 @@ if (!name.matches("^[A-Za-z ]+[0-9]*$")) {
     }
 }
     
-    private void updateSummary() {
+    public void updateSummary() {
 
     totalProductsLabel.setText(
         "Total Products: " + inventoryModel.getAllItems().size()
@@ -558,7 +602,7 @@ if (!name.matches("^[A-Za-z ]+[0-9]*$")) {
     );
 }
    
-    private void setupInventoryTable() {
+    public void setupInventoryTable() {
 
     String[] columns = {
         "Product ID", "Name", "Quantity", "Minimum", "Price"
@@ -570,7 +614,7 @@ if (!name.matches("^[A-Za-z ]+[0-9]*$")) {
     JScrollPane scrollPane = new JScrollPane(inventoryTable);
     inventoryTablePanel.add(scrollPane, BorderLayout.CENTER);
 }
-    private void refreshInventoryTable() {
+    public void refreshInventoryTable() {
 
     DefaultTableModel model =
         (DefaultTableModel) inventoryTable.getModel();
@@ -587,7 +631,7 @@ if (!name.matches("^[A-Za-z ]+[0-9]*$")) {
         });
     }
 }
-    private void loadInventoryTable() {
+    public void loadInventoryTable() {
     DefaultTableModel model = (DefaultTableModel) inventoryTable.getModel();
     model.setRowCount(0); // clear table
 
@@ -601,6 +645,100 @@ if (!name.matches("^[A-Za-z ]+[0-9]*$")) {
         });
     }
 }
+    public JTable getInvetoryTable()
+    {
+        return inventoryTable;
+    }
+    public void loadSalesReportTable() {
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0);
+
+    int saleId = 1;
+
+    for (Sale s : saleModel.getAllSaleItems()) {
+        model.addRow(new Object[]{
+            saleId++,          // Sale Id
+            s.getName(),       // Product Name
+            s.getQuantity(),   // Quantity
+            s.getPrice(),      // Price
+            s.getUsername(),   // User
+            s.getDate()        // Date
+        });
+    }
+}
+    public static void selectionSortByProductName(java.util.LinkedList<Sale> list) {
+
+    int size = list.size();
+
+    for (int step = 0; step < size - 1; step++) {
+
+        int minIdx = step;
+
+        for (int i = step + 1; i < size; i++) {
+
+            if (list.get(i).getName()
+                    .compareToIgnoreCase(list.get(minIdx).getName()) < 0) {
+
+                minIdx = i;
+            }
+        }
+
+        // swap
+        if (minIdx != step) {
+            Sale temp = list.get(step);
+            list.set(step, list.get(minIdx));
+            list.set(minIdx, temp);
+        }
+    }
+}
+public static void bubbleSortByQuantity(java.util.LinkedList<Sale> list) {
+
+    int n = list.size();
+    boolean swapped;
+
+    for (int i = 0; i < n - 1; i++) {
+        swapped = false;
+
+        for (int j = 0; j < n - i - 1; j++) {
+
+            if (list.get(j).getQuantity() > list.get(j + 1).getQuantity()) {
+
+                Sale temp = list.get(j);
+                list.set(j, list.get(j + 1));
+                list.set(j + 1, temp);
+
+                swapped = true;
+            }
+        }
+
+        if (!swapped) {
+            break; // already sorted
+        }
+    }
+}
+    public void setTopProductValue(String text) {
+    jLabel12.setText(text);
+    }
+    public void setTotalProductsValue(String text) {
+    jLabel14.setText(text);
+}
+
+public void setTotalSalesValue(String text) {
+    jLabel10.setText(text);
+}
+
+public void setLowStockValue(String text) {
+    jLabel11.setText(text);
+}
+public JTable getAnalyticsTable() {
+    return jTable2;
+}
+
+
+
+
+   
+
 
 
 
@@ -642,7 +780,7 @@ java.awt.EventQueue.invokeLater(() ->
 
         /* Create and display the form */
       //  java.awt.EventQueue.invokeLater(() -> new AdminView().setVisible(true));
-    }
+   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Analytics;
@@ -650,7 +788,12 @@ java.awt.EventQueue.invokeLater(() ->
     private javax.swing.JPanel Dashboard;
     private javax.swing.JPanel InventoryPanel;
     private javax.swing.JPanel SalePanel;
+    private javax.swing.JPanel SummaryPanel;
+    private javax.swing.JPanel Title;
     private javax.swing.JButton addItemButton;
+    private javax.swing.JComboBox<String> adminCombo;
+    private javax.swing.JButton adminSort;
+    private javax.swing.JPanel analyticsTablePanel;
     private javax.swing.JPanel dashboardCenteralPanel;
     private javax.swing.JButton deleteItemButton;
     private javax.swing.JPanel inventoryButtonPanel;
@@ -659,17 +802,48 @@ java.awt.EventQueue.invokeLater(() ->
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabelLowStock;
+    private javax.swing.JLabel jLabelTotalProducts;
+    private javax.swing.JLabel jLabelTotalSale;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JLabel jTopProduct;
     private javax.swing.JLabel lowStockLabel;
     private javax.swing.JPanel lowStockPanel;
     private javax.swing.JPanel recentSalesPanel;
+    private javax.swing.JPanel salesControlPanel;
+    private javax.swing.JComboBox<String> salesSortCombo;
+    private javax.swing.JPanel salesTablePanel;
+    private javax.swing.JPanel salesTitlePanel;
     private javax.swing.JPanel summaryPanel;
     private javax.swing.JPanel title;
     private javax.swing.JPanel titlePanel;
