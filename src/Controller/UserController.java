@@ -9,6 +9,8 @@ import Model.SaleModel;
 import View.UserView;
 import Model.item;
 import Model.Sale;
+import Model.UserModel;
+import View.LoginView;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
@@ -113,7 +115,7 @@ public void sortProducts() {
     java.util.ArrayList<item> list =
             new java.util.ArrayList<>(inventoryModel.getAllItems());
 
-    // ✅ PRICE ASCENDING (Merge Sort)
+    //  PRICE ASCENDING (Merge Sort)
     if (choice.equals("Price (Ascending)")) {
 
         java.util.ArrayList<item> sorted =
@@ -159,32 +161,6 @@ public int linearSearchByProductId(java.util.ArrayList<item> list, String keyId)
     }
     return -1; //  not found
 }
-public int binarySearchByProductId(java.util.ArrayList<item> list, String keyId) {
-
-    int low = 0;
-    int high = list.size() - 1;
-
-    while (low <= high) {
-
-        int mid = (low + high) / 2;
-
-        String midId = list.get(mid).getProductId();
-
-        int result = midId.compareToIgnoreCase(keyId);
-
-        if (result == 0) {
-            return mid; //  found
-        } 
-        else if (result > 0) {
-            high = mid - 1; // search left
-        } 
-        else {
-            low = mid + 1; // search right
-        }
-    }
-
-    return -1; //  not found
-}
 public void selectionSortByProductId(java.util.ArrayList<item> list) {
 
     int size = list.size();
@@ -196,7 +172,7 @@ public void selectionSortByProductId(java.util.ArrayList<item> list) {
         for (int i = step + 1; i < size; i++) {
 
             if (list.get(i).getProductId()
-                    .compareToIgnoreCase(list.get(minIndex).getProductId()) < 0) {
+                    .compareToIgnoreCase(list.get(minIndex).getProductId().trim()) < 0) {
                 minIndex = i;
             }
         }
@@ -206,6 +182,30 @@ public void selectionSortByProductId(java.util.ArrayList<item> list) {
         list.set(minIndex, temp);
     }
 }
+
+public int binarySearchByProductId(java.util.ArrayList<item> list, String keyId) {
+
+    int low = 0;
+    int high = list.size() - 1;
+   keyId = keyId.trim();
+    while (low <= high) {
+        int mid = (low + high) / 2;
+
+        String midId = list.get(mid).getProductId().trim();
+        int result = midId.compareToIgnoreCase(keyId);
+
+        if (result == 0) {
+            return mid;
+        } else if (result > 0) {
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
+    }
+
+    return -1;
+}
+
 
 /*public void searchProduct() {
 
@@ -342,7 +342,7 @@ public void searchProduct() {
             }
         }
     }
-    else if (type.equals("Binary")) {
+    /*else if (type.equals("Binary")) {
         java.util.ArrayList<item> sortedList = new java.util.ArrayList<>(originalList);
         selectionSortByName(sortedList);
 
@@ -366,6 +366,36 @@ public void searchProduct() {
     if (!found) {
         JOptionPane.showMessageDialog(userView, "Product Not Found!");
         userView.loadProductData(); // Restore full table
+    }*/
+     else if (type.equals("Binary")) {
+
+        java.util.ArrayList<item> sortedList =
+                new java.util.ArrayList<>(originalList);
+
+        selectionSortByProductId(sortedList); // must be sorted first
+
+        int index = binarySearchByProductId(sortedList, searchText.trim());
+
+        if (index != -1) {
+
+            item foundItem = sortedList.get(index);
+
+            model.addRow(new Object[]{
+                foundItem.getProductId(),
+                foundItem.getName(),
+                foundItem.getQuantity(),
+                foundItem.getMinimum(),
+                foundItem.getPrice()
+            });
+
+            found = true;
+            JOptionPane.showMessageDialog(userView, "Product Found!");
+        }
+    }
+
+    if (!found) {
+        JOptionPane.showMessageDialog(userView, "Product Not Found!");
+        userView.loadProductData(); // restore full table
     }
 }
 
@@ -415,8 +445,9 @@ private int binarySearchByName(java.util.ArrayList<item> list, String key) {
         }
     }
 
-    return -1; //  NOT FOUND
+    return -1; // Not FOUND
 }
+
 public void binarySearchProduct() {
 
     String keyword = userView.getSearchText();
@@ -462,11 +493,34 @@ public void binarySearchProduct() {
     JOptionPane.showMessageDialog(userView, "Product Found!");
 }
 
+public void logout() {
+
+    int confirm = JOptionPane.showConfirmDialog(
+        userView,
+        "Are you sure you want to logout?",
+        "Logout",
+        JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirm == JOptionPane.YES_OPTION) {
+
+        userView.dispose(); // close AdminView
+
+        // open login again with same models
+        LoginView loginView = new LoginView(
+            new UserModel(),
+            inventoryModel,
+            saleModel
+        );
+
+        loginView.setVisible(true);
+    }
 
 
 
 
 
+}
 
 
     

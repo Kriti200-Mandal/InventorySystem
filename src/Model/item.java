@@ -23,7 +23,7 @@ public class item {
    {
        this.product_id = product_id;
         this.name = name;
-        //this.category = category;
+       
          this.minimum_stock_alert = minimum_stock_alert;
          this.quantity = quantity;
           this.price = price;
@@ -37,10 +37,7 @@ public class item {
    {
        return name;
    }
-   /*public int getCategory()
-   {
-       return category;
-   }*/
+   
    public int getMinimum()
    {
        return minimum_stock_alert;
@@ -63,10 +60,7 @@ public class item {
    {
        this.name = Name;
    }
-  /* public void setCategory(int Category)
-   {
-       this.category = Category;
-   }*/
+  
    public void setMinimum(int minimum_stock_alert)
    {
        this.minimum_stock_alert = minimum_stock_alert;

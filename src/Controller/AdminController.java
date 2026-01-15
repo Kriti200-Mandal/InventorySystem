@@ -7,12 +7,15 @@ import Model.InventoryModel;
 import Model.SaleModel;
 import Model.item;
 import View.AdminView;
+import View.LoginView;
 import java.awt.BorderLayout;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import Model.Sale;
+import Model.UserModel;
+import Controller.LoginController;
 
 /**
  *
@@ -30,6 +33,7 @@ public class AdminController {
         this.inventoryModel = inventoryModel;
         this.saleModel = saleModel;
         this.adminView = adminView;
+        
     }
     
     public void addProduct()
@@ -268,19 +272,19 @@ if (!name.matches("^[A-Za-z ]+[0-9]*$")) {
     }    
    public void loadAnalytics() {
 
-    // ✅ Total Products
+    //  Total Products
     int totalProducts = inventoryModel.getAllItems().size();
     adminView.setTotalProductsValue(String.valueOf(totalProducts));
 
-    // ✅ Total Sales
+    // Total Sales
     int totalSales = saleModel.getAllSaleItems().size();
     adminView.setTotalSalesValue(String.valueOf(totalSales));
 
-    // ✅ Low Stock
+    //  Low Stock
     int lowStock = inventoryModel.getLowStockItem().size();
     adminView.setLowStockValue(String.valueOf(lowStock));
 
-    // ✅ Fill Analytics Table (Product | Total Sale | Total Revenue)
+    //  Fill Analytics Table (Product | Total Sale | Total Revenue)
     DefaultTableModel model =
             (DefaultTableModel) adminView.getAnalyticsTable().getModel();
 
@@ -317,7 +321,7 @@ if (!name.matches("^[A-Za-z ]+[0-9]*$")) {
         });
     }
 
-    // ✅ Find Top Product
+    // Find Top Product
     if (productNames.isEmpty()) {
         adminView.setTopProductValue("0");
     } else {
@@ -392,6 +396,42 @@ if (!name.matches("^[A-Za-z ]+[0-9]*$")) {
         JOptionPane.showMessageDialog(adminView, "Nothing to Undo!");
     }
 }
+public void logout() {
+
+    int confirm = JOptionPane.showConfirmDialog(
+        adminView,
+        "Are you sure you want to logout?",
+        "Logout",
+        JOptionPane.YES_NO_OPTION
+    );
+
+    if (confirm == JOptionPane.YES_OPTION) {
+
+        adminView.dispose(); // close AdminView
+
+        // open login again with same models
+        LoginView loginView = new LoginView(
+            new UserModel(),
+            inventoryModel,
+            saleModel
+        );
+
+        loginView.setVisible(true);
+    }
+}
+public void undoClearSales() {
+    boolean restored = saleModel.undoClearSales();
+
+    if (restored) {
+        adminView.loadSalesReportTable();
+        adminView.loadRecentSalesData();
+        adminView.updateSummary();
+        JOptionPane.showMessageDialog(adminView, "Sales Undo Successful!");
+    } else {
+        JOptionPane.showMessageDialog(adminView, "Nothing to Undo!");
+    }
+}
+
 
 
 

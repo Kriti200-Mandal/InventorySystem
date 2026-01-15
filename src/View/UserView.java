@@ -77,6 +77,8 @@ public class UserView extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jButton3 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("User View");
@@ -167,6 +169,17 @@ public class UserView extends javax.swing.JFrame {
         });
         BuyPanel.add(jButton3);
 
+        jLabel6.setPreferredSize(new java.awt.Dimension(250, 10));
+        BuyPanel.add(jLabel6);
+
+        jButton2.setText("Log Out");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        BuyPanel.add(jButton2);
+
         getContentPane().add(BuyPanel, java.awt.BorderLayout.SOUTH);
 
         pack();
@@ -200,15 +213,20 @@ public class UserView extends javax.swing.JFrame {
 
     private void searchbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchbtnActionPerformed
         // TODO add your handling code here:
-        String method = searchCombo.getSelectedItem().toString(); // Linear / Binary
-
+        /*String method = searchCombo.getSelectedItem().toString(); // Linear / Binary
+      
     if (method.equalsIgnoreCase("Linear")) {
         userController.searchProduct();   // your linear method
     } else {
         userController.binarySearchProduct(); //  binary
-    }
-         
+    }*/
+      userController.searchProduct();   
     }//GEN-LAST:event_searchbtnActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+       userController.logout();
+    }//GEN-LAST:event_jButton2ActionPerformed
      private void setupProductTable() {
     String[] columns = { "Product ID", "Name", "Quantity","Minimum", "Price" };
 
@@ -490,12 +508,14 @@ public void loadSortedProductData(ArrayList<item> sortedList) {
     private javax.swing.JPanel ProductTable;
     private javax.swing.JPanel TitlePanel;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
