@@ -34,16 +34,26 @@ public class LoginView extends javax.swing.JFrame {
     this.inventoryModel = inventoryModel;
     this.saleModel = saleModel;
     inventoryModel.addItem(new item("P001","Paracetamol",10,3,20));
-    inventoryModel.addItem(new item("P002","Vitamin C",5,4,15));
-    inventoryModel.addItem(new item("P003","Aspirin",2,5,10));
-    inventoryModel.addItem(new item("P004","Cough Syrup",8,2,50));
-    inventoryModel.addItem(new item("P005","Bandage",1,5,5));
-    
-     saleModel.addSale(new Sale("P001","Paracetamol",2,20,"user1",LocalDateTime.now()));
-    saleModel.addSale(new Sale("P002","Vitamin C",1,15,"user2",LocalDateTime.now()));
-    saleModel.addSale(new Sale("P003","Aspirin",1,10,"user3",LocalDateTime.now()));
-    saleModel.addSale(new Sale("P004","Cough Syrup",3,50,"user1",LocalDateTime.now()));
-    saleModel.addSale(new Sale("P005","Bandage",2,5,"user2",LocalDateTime.now()));
+inventoryModel.addItem(new item("P002","Vitamin C",5,4,15));
+inventoryModel.addItem(new item("P003","Aspirin",2,5,10));
+inventoryModel.addItem(new item("P004","Cough Syrup",8,2,50));
+inventoryModel.addItem(new item("P005","Bandage",1,5,5));
+inventoryModel.addItem(new item("P006","Ibuprofen",12,4,25));
+inventoryModel.addItem(new item("P007","Antiseptic Cream",6,3,30));
+inventoryModel.addItem(new item("P008","Thermometer",4,2,120));
+inventoryModel.addItem(new item("P009","ORS Powder",15,5,10));
+inventoryModel.addItem(new item("P010","Hand Sanitizer",3,4,60));
+
+  saleModel.addSale(new Sale("P001","Paracetamol",2,20,"user1",LocalDateTime.now()));
+saleModel.addSale(new Sale("P002","Vitamin C",1,15,"user2",LocalDateTime.now()));
+saleModel.addSale(new Sale("P003","Aspirin",1,10,"user3",LocalDateTime.now()));
+saleModel.addSale(new Sale("P004","Cough Syrup",3,50,"user1",LocalDateTime.now()));
+saleModel.addSale(new Sale("P005","Bandage",2,5,"user2",LocalDateTime.now()));
+saleModel.addSale(new Sale("P006","Ibuprofen",4,25,"user4",LocalDateTime.now()));
+saleModel.addSale(new Sale("P007","Antiseptic Cream",1,30,"user5",LocalDateTime.now()));
+saleModel.addSale(new Sale("P008","Thermometer",1,120,"user2",LocalDateTime.now()));
+saleModel.addSale(new Sale("P009","ORS Powder",5,10,"user3",LocalDateTime.now()));
+saleModel.addSale(new Sale("P010","Hand Sanitizer",2,60,"user1",LocalDateTime.now()));
         
         //UserModel userModel = new UserModel();
         //InventoryModel inventoryModel = new InventoryModel();
