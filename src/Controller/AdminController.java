@@ -489,7 +489,11 @@ public void showSalesByQuantity(LocalDate from, LocalDate to) {
             }
         }
     }
+
+    //  SHOW RESULT IN TABLE
+    adminView.loadQuantityTable(filtered);
 }
+
 
 
 

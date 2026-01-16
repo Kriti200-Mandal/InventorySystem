@@ -107,7 +107,6 @@ private JTable inventoryTable;
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         salesControlPanel = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         salesSortCombo = new javax.swing.JComboBox<>();
         jButton7 = new javax.swing.JButton();
@@ -303,14 +302,6 @@ private JTable inventoryTable;
         jScrollPane2.setViewportView(jTable1);
 
         salesTablePanel.add(jScrollPane2, java.awt.BorderLayout.CENTER);
-
-        jButton5.setText("Refresh");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        salesControlPanel.add(jButton5);
 
         jButton6.setText("Sort");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
@@ -584,11 +575,6 @@ cl.show(ContentPanel, "inventory");
         // TODO add your handling code here:
     }//GEN-LAST:event_adminComboActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        // TODO add your handling code here:
-        loadSalesReportTable();
-    }//GEN-LAST:event_jButton5ActionPerformed
-
     private void salesSortComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salesSortComboActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_salesSortComboActionPerformed
@@ -637,18 +623,17 @@ cl.show(ContentPanel, "inventory");
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
-        try {
-        LocalDate from = LocalDate.parse(this.fromDate.getText().trim());
+       try {
+        LocalDate from = LocalDate.parse(fromDate.getText().trim());
         LocalDate to   = LocalDate.parse(toDateField.getText().trim());
 
-        String option = salesSortCombo.getSelectedItem().toString();
-
-        if (option.equalsIgnoreCase("Quantity")) {
-            adminController.showSalesByQuantity(from, to);
-        }
+        adminController.showSalesByQuantity(from, to);
 
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Invalid date format! Use yyyy-MM-dd");
+        JOptionPane.showMessageDialog(this,
+                "Invalid date format! Use yyyy-MM-dd",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_jButton6ActionPerformed
 
@@ -1107,11 +1092,6 @@ public void lowStock()
     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
     model.setRowCount(0);
 
-    // reset original columns
-    model.setColumnIdentifiers(new String[]{
-        "Sale Id", "Product Name", "Quantity", "Price", "User", "Date"
-    });
-
     int saleId = 1;
     for (Sale s : sales) {
         model.addRow(new Object[]{
@@ -1124,6 +1104,7 @@ public void lowStock()
         });
     }
 }
+
 
 
     
@@ -1197,7 +1178,6 @@ java.awt.EventQueue.invokeLater(() ->{
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
