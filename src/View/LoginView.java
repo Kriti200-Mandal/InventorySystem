@@ -80,19 +80,21 @@ public class LoginView extends javax.swing.JFrame {
         setMinimumSize(new java.awt.Dimension(800, 500));
         setSize(new java.awt.Dimension(600, 400));
 
-        MainPanel.setBackground(new java.awt.Color(245, 246, 250));
+        MainPanel.setBackground(new java.awt.Color(236, 240, 240));
         MainPanel.setLayout(new javax.swing.BoxLayout(MainPanel, javax.swing.BoxLayout.LINE_AXIS));
 
-        jLabel1.setBackground(new java.awt.Color(235, 235, 235));
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(33, 33, 33));
+        jLabel1.setForeground(new java.awt.Color(44, 62, 80));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("                                    Smart Inventory Alert System");
 
+        jLabel2.setForeground(new java.awt.Color(52, 73, 94));
         jLabel2.setText("User Name");
 
+        UserType.setForeground(new java.awt.Color(52, 73, 94));
         UserType.setText("User Type");
 
+        jLabel4.setForeground(new java.awt.Color(52, 73, 94));
         jLabel4.setText("Password");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "User" }));
@@ -116,7 +118,7 @@ public class LoginView extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(220, 220, 220));
+        jButton2.setBackground(new java.awt.Color(149, 165, 166));
         jButton2.setText("Cancel");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -177,7 +179,7 @@ public class LoginView extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(PasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))

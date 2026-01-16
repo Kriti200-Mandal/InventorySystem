@@ -18,6 +18,10 @@ import javax.swing.JOptionPane;
 import Controller.AdminController;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.HashMap;
+
+
 
 
 
@@ -59,6 +63,10 @@ private JTable inventoryTable;
           updateSummary() ;
           refreshInventoryTable();
           lowStock();
+          //showLowStock();
+          javax.swing.SwingUtilities.invokeLater(() -> {
+        showLowStock();
+    });
           
     }
 
@@ -106,9 +114,9 @@ private JTable inventoryTable;
         jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
         jButton10 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
+        fromDate = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        toDateField = new javax.swing.JTextField();
         Analytics = new javax.swing.JPanel();
         SummaryPanel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -305,9 +313,14 @@ private JTable inventoryTable;
         salesControlPanel.add(jButton5);
 
         jButton6.setText("Sort");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
         salesControlPanel.add(jButton6);
 
-        salesSortCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Date (Newest First)", "Date (Oldest First)", "Price (High to Low)", "Price (Low to High)", "Quantity (High to Low)", "Quantity (Low to High)", "Product Name (A-Z)", "Product Name (Z-A)", "User (A-Z)", "User (Z-A)" }));
+        salesSortCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "user", "Quantity", " " }));
         salesSortCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 salesSortComboActionPerformed(evt);
@@ -334,14 +347,14 @@ private JTable inventoryTable;
         });
         jPanel2.add(jButton10);
 
-        jTextField1.setColumns(15);
-        jPanel2.add(jTextField1);
+        fromDate.setColumns(15);
+        jPanel2.add(fromDate);
 
         jLabel9.setText("To Date");
         jPanel2.add(jLabel9);
 
-        jTextField2.setColumns(15);
-        jPanel2.add(jTextField2);
+        toDateField.setColumns(15);
+        jPanel2.add(toDateField);
 
         salesControlPanel.add(jPanel2);
 
@@ -622,8 +635,25 @@ cl.show(ContentPanel, "inventory");
     }
     }//GEN-LAST:event_jButton10ActionPerformed
 
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        try {
+        LocalDate from = LocalDate.parse(this.fromDate.getText().trim());
+        LocalDate to   = LocalDate.parse(toDateField.getText().trim());
+
+        String option = salesSortCombo.getSelectedItem().toString();
+
+        if (option.equalsIgnoreCase("Quantity")) {
+            adminController.showSalesByQuantity(from, to);
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Invalid date format! Use yyyy-MM-dd");
+    }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
     
-   public void setupLowStockTable() {
+   /*public void setupLowStockTable() {
 
     String[] columns = { "Product Name", "Quantity", "Minimum" };
 
@@ -633,7 +663,15 @@ cl.show(ContentPanel, "inventory");
     JScrollPane scrollPane = new JScrollPane(lowStockTable);
 
     lowStockPanel.add(scrollPane, BorderLayout.CENTER);
+}*/
+    public void setupLowStockTable() {
+    String[] columns = { "Product Name", "Quantity", "Minimum" };
+    DefaultTableModel model = new DefaultTableModel(columns, 0);
+    lowStockTable = new JTable(model);
+
+    jScrollPane1.setViewportView(lowStockTable); // correct
 }
+
     public void loadLowStockData() {
 
     DefaultTableModel model = (DefaultTableModel) lowStockTable.getModel();
@@ -751,6 +789,24 @@ cl.show(ContentPanel, "inventory");
     {
         return inventoryTable;
     }
+    public void loadSalesTable(ArrayList<Sale> sales) {
+
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0);
+
+    int saleId = 1;
+    for (Sale s : sales) {
+        model.addRow(new Object[]{
+            saleId++,
+            s.getName(),
+            s.getQuantity(),
+            s.getPrice(),
+            s.getUsername(),
+            s.getDate()
+        });
+    }
+}
+
     public void loadSalesReportTable() {
     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
     model.setRowCount(0);
@@ -1034,6 +1090,42 @@ public void lowStock()
             
         }
     }
+    public void loadUserQuantityTable(HashMap<String, Integer> userTotals) {
+
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0);
+
+    // change column names for this view
+    model.setColumnIdentifiers(new String[]{"User", "Total Quantity"});
+
+    for (String user : userTotals.keySet()) {
+        model.addRow(new Object[]{user, userTotals.get(user)});
+    }
+}
+    public void loadQuantityTable(ArrayList<Sale> sales) {
+
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    model.setRowCount(0);
+
+    // reset original columns
+    model.setColumnIdentifiers(new String[]{
+        "Sale Id", "Product Name", "Quantity", "Price", "User", "Date"
+    });
+
+    int saleId = 1;
+    for (Sale s : sales) {
+        model.addRow(new Object[]{
+            saleId++,
+            s.getName(),
+            s.getQuantity(),
+            s.getPrice(),
+            s.getUsername(),
+            s.getDate()
+        });
+    }
+}
+
+
     
 
 
@@ -1073,7 +1165,7 @@ java.awt.EventQueue.invokeLater(() ->{
     //new AdminView(inventoryModel, saleModel).setVisible(true)
         AdminView view = new AdminView(inventoryModel, saleModel);
     view.setVisible(true);
-    view.showLowStock(); 
+    //view.showLowStock(); 
             });
 
 
@@ -1097,6 +1189,7 @@ java.awt.EventQueue.invokeLater(() ->{
     private javax.swing.JPanel analyticsTablePanel;
     private javax.swing.JPanel dashboardCenteralPanel;
     private javax.swing.JButton deleteItemButton;
+    private javax.swing.JTextField fromDate;
     private javax.swing.JPanel inventoryButtonPanel;
     private javax.swing.JPanel inventoryTablePanel;
     private javax.swing.JButton jButton1;
@@ -1139,8 +1232,6 @@ java.awt.EventQueue.invokeLater(() ->{
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel jTopProduct;
     private javax.swing.JLabel lowStockLabel;
     private javax.swing.JPanel lowStockPanel;
@@ -1152,6 +1243,7 @@ java.awt.EventQueue.invokeLater(() ->{
     private javax.swing.JPanel summaryPanel;
     private javax.swing.JPanel title;
     private javax.swing.JPanel titlePanel;
+    private javax.swing.JTextField toDateField;
     private javax.swing.JLabel totalProductsLabel;
     private javax.swing.JLabel totalSalesLabel;
     private javax.swing.JButton undoButton;

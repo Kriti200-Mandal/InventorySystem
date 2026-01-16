@@ -16,7 +16,9 @@ import javax.swing.table.DefaultTableModel;
 import Model.Sale;
 import Model.UserModel;
 import Controller.LoginController;
-
+import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.HashMap;
 /**
  *
  * @author dell
@@ -346,7 +348,7 @@ if (!name.matches("^[A-Za-z ]+[0-9]*$")) {
     java.util.ArrayList<item> list =
             new java.util.ArrayList<>(inventoryModel.getAllItems());
 
-    // ✅ PRICE ASCENDING (Merge Sort)
+    //  PRICE ASCENDING (Merge Sort)
     if (choice.equals("Price (Ascending)")) {
 
         java.util.ArrayList<item> sorted =
@@ -431,6 +433,64 @@ public void undoClearSales() {
         JOptionPane.showMessageDialog(adminView, "Nothing to Undo!");
     }
 }
+private ArrayList<Sale> filterByDate(
+        ArrayList<Sale> sales,
+        LocalDate from,
+        LocalDate to) {
+
+    ArrayList<Sale> result = new ArrayList<>();
+
+    for (Sale s : sales) {
+        LocalDate d = s.getDate().toLocalDate();
+        if (!d.isBefore(from) && !d.isAfter(to)) {
+            result.add(s);
+        }
+    }
+    return result;
+}
+
+public void showSalesByUser(LocalDate from, LocalDate to, AdminView view) {
+
+    ArrayList<Sale> filtered =
+            filterByDate(new ArrayList<>(saleModel.getAllSaleItems()), from, to);
+
+    HashMap<String, Integer> userTotals = new HashMap<>();
+
+    for (Sale s : filtered) {
+        userTotals.put(
+            s.getUsername(),
+            userTotals.getOrDefault(s.getUsername(), 0) + s.getQuantity()
+        );
+    }
+
+    view.loadUserQuantityTable(userTotals);
+}
+/*public void showSalesByQuantity(LocalDate from, LocalDate to, AdminView view) {
+
+    ArrayList<Sale> filtered =
+            filterByDate(new ArrayList<>(saleModel.getAllSaleItems()), from, to);
+
+    view.loadQuantityTable(filtered);
+}*/
+public void showSalesByQuantity(LocalDate from, LocalDate to) {
+
+    ArrayList<Sale> filtered =
+            filterByDate(new ArrayList<>(saleModel.getAllSaleItems()), from, to);
+
+    // Sort by quantity ascending
+    for (int i = 0; i < filtered.size() - 1; i++) {
+        for (int j = 0; j < filtered.size() - i - 1; j++) {
+
+            if (filtered.get(j).getQuantity() > filtered.get(j + 1).getQuantity()) {
+
+                Sale temp = filtered.get(j);
+                filtered.set(j, filtered.get(j + 1));
+                filtered.set(j + 1, temp);
+            }
+        }
+    }
+}
+
 
 
 

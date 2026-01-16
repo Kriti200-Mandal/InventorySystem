@@ -37,36 +37,57 @@ public class LoginController {
     }
     public void handleLogin(String userName , String password, String userType)
     {
-      if (userName == null || userName.isEmpty() || password == null || password.isEmpty())
-      {
-          JOptionPane.showMessageDialog(view, "UserName and Password required","Login Error",JOptionPane.ERROR_MESSAGE);
-          return;
-      }
-    
-        //  user loginUser = userModel.authenticate(userName.trim(), password);
-          
-          
-        /*  if(loginUser == null)
-          {
-              JOptionPane.showMessageDialog(view, "Invalid Username or password");
-              return;
-          }*/
-         
-          if(userType.equalsIgnoreCase("admin"))
-          {
-              user admin = userModel.authenticate(userName.trim(), password);
-              if(admin == null)
-              {
-                  JOptionPane.showMessageDialog(view, "Invalid Admin Credentials", "Access Denied",JOptionPane.ERROR_MESSAGE);
-                  return;
-              }
-            new AdminView(inventoryModel, saleModel).setVisible(true);
-          }
-          else
-          {
-            new UserView(inventoryModel, saleModel,userName.trim()).setVisible(true);  
-          }
-          
+      
+        if (userName == null || userName.trim().isEmpty() ||
+        password == null || password.trim().isEmpty()) {
+
+        JOptionPane.showMessageDialog(view,
+                "UserName and Password required",
+                "Login Error",
+                JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    userName = userName.trim();
+    password = password.trim();
+
+    // Username validation (no number allowed)
+    if (!userName.matches("^[A-Za-z ]+$")) {
+        JOptionPane.showMessageDialog(view,
+                "Invalid Username!",
+                "Login Error",
+                JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    //  ADMIN (only one fixed admin)
+    if (userType.equalsIgnoreCase("Admin")) {
+
+        if (!userName.equalsIgnoreCase("admin") || !password.equals("admin123")) {
+            JOptionPane.showMessageDialog(view,
+                    "Invalid Admin Credentials!",
+                    "Access Denied",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        new AdminView(inventoryModel, saleModel).setVisible(true);
+        view.dispose();
+        return;
+    }
+
+    // USER (multiple users allowed)
+    user u = userModel.authenticate(userName, password);
+
+    if (u == null) {
+        JOptionPane.showMessageDialog(view,
+                "Invalid User Credentials!",
+                "Login Failed",
+                JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    new UserView(inventoryModel, saleModel, userName).setVisible(true);
     view.dispose();
     
 }

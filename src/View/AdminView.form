@@ -375,21 +375,17 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Sort"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton6ActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JComboBox" name="salesSortCombo">
                       <Properties>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="10">
-                            <StringItem index="0" value="Date (Newest First)"/>
-                            <StringItem index="1" value="Date (Oldest First)"/>
-                            <StringItem index="2" value="Price (High to Low)"/>
-                            <StringItem index="3" value="Price (Low to High)"/>
-                            <StringItem index="4" value="Quantity (High to Low)"/>
-                            <StringItem index="5" value="Quantity (Low to High)"/>
-                            <StringItem index="6" value="Product Name (A-Z)"/>
-                            <StringItem index="7" value="Product Name (Z-A)"/>
-                            <StringItem index="8" value="User (A-Z)"/>
-                            <StringItem index="9" value="User (Z-A)"/>
+                          <StringArray count="3">
+                            <StringItem index="0" value="user"/>
+                            <StringItem index="1" value="Quantity"/>
+                            <StringItem index="2" value=" "/>
                           </StringArray>
                         </Property>
                       </Properties>
@@ -425,7 +421,7 @@
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton10ActionPerformed"/>
                           </Events>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="jTextField1">
+                        <Component class="javax.swing.JTextField" name="fromDate">
                           <Properties>
                             <Property name="columns" type="int" value="15"/>
                           </Properties>
@@ -435,7 +431,7 @@
                             <Property name="text" type="java.lang.String" value="To Date"/>
                           </Properties>
                         </Component>
-                        <Component class="javax.swing.JTextField" name="jTextField2">
+                        <Component class="javax.swing.JTextField" name="toDateField">
                           <Properties>
                             <Property name="columns" type="int" value="15"/>
                           </Properties>

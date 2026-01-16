@@ -40,6 +40,9 @@ public class UserView extends javax.swing.JFrame {
          setupProductTable();
          loadProductData();
          lowStock();
+          javax.swing.SwingUtilities.invokeLater(() -> {
+        showLowStock();
+    });
          
          
          
@@ -273,7 +276,7 @@ public class UserView extends javax.swing.JFrame {
 
         UserView view = new UserView(inventoryModel,saleModel, "user1");
       view.setVisible(true);
-      view.showLowStock();
+      //view.showLowStock();
 
         
         /*java.awt.EventQueue.invokeLater(() -> new UserView().setVisible(true));*/
